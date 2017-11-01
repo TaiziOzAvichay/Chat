@@ -45,8 +45,7 @@ io.on('connection', function(socket){
 		}
 
 		socket.broadcast.emit('chat message', messageWithoutCommand, style);
-		//io.emit('chat message', msg);
-		//console.log('message: ' + msg);
+
 	});
 });
 
