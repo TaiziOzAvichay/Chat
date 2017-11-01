@@ -5,8 +5,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var commands = [
-	{command:'/setColor' , style:'color :', lengthOperation: 6},
-	{command:'/setBorder' , style:'border :', lengthOperation: 6}
+	{command:'/setColor' , style:'color :', lengthOperation: 9},
+	{command:'/setBold' , style:'font-weight: bold', lengthOperation:0}
 ];
 
 
@@ -26,18 +26,25 @@ io.on('connection', function(socket){
 	{
 		var style = '';
 		var commandIndex = msg.indexOf('/');
-		var action = commandIndex != -1  ?  commands[msg.string.replace(/  +/g, ' ').substring(" ",commandIndex)] : "";
+		var messageWithoutCommand  = commandIndex != -1  ?  msg.substring(0,commandIndex) : msg;
 
-		if(action != null)
+		for (var i=0; i < commands.length; i++)
 		{
+			var currCommand = commands[i];
+			var currCommandIndex = msg.indexOf(currCommand.command);
+
+
+			if (currCommandIndex != -1)
+			{
+				var nextCommandIndex = msg.indexOf('/',currCommandIndex + 1) == -1 ? msg.length : msg.indexOf('/',currCommandIndex + 1);
+
+				style += currCommand.style + msg.substring(currCommandIndex + currCommand.command.length,
+													nextCommandIndex) + ';';
+			}
 
 		}
 
-
-
-
-
-		socket.broadcast.emit('chat message', msg);
+		socket.broadcast.emit('chat message', messageWithoutCommand, style);
 		//io.emit('chat message', msg);
 		//console.log('message: ' + msg);
 	});
