@@ -5,8 +5,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var commands = [
-	{command:'/setColor' , style:'color :', lengthOperation: 9},
-	{command:'/setBold' , style:'font-weight: bold', lengthOperation:0}
+	{command:'/setColor' , style:'color :'},
+	{command:'/setBold' , style:'font-weight: bold'}
 ];
 
 
